@@ -1,22 +1,23 @@
-version: "3.7"
 services:
-
   app:
-    container_name: calendar_app
     env_file: ./.env.local
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     build:
       context: .
       dockerfile: docker/php/Dockerfile
       args:
-        - DOCKER_TIMEZONE=${DOCKER_TIMEZONE}
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-    user: "${USER_ID}:${GROUP_ID}"
+        - USER=appuser
+        - UID=${UID}
+        - COMPOSER_VERSION=${COMPOSER_VERSION?}
+        - REDIS_VERSION=${REDIS_VERSION?}
+    environment:
+      XDEBUG_CLIENT_PORT: 9003
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - '80:80'
+      - '443:443'
     volumes:
-      - ".:/usr/src/app"
-      - "./docker/php/conf/php.ini:/usr/local/etc/php/php.ini:ro"
-      - "./docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro"
-      - "./docker/uploads/:/usr/src/app/public/uploads"
-    working_dir: /usr/src/app
+      - ".:/var/www/html"
+      - "./docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini"
+      - "./docker/php/conf/php.ini:/usr/local/etc/php/conf.d/php.ini"
+      - "./docker/uploads:/var/www/html/public/uploads:rw"

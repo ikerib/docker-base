@@ -3,9 +3,10 @@
 APP = base
 VERSION := $(shell cat ./VERSION)
 DOCKER_REPO_APP = ikerib/${APP}:${VERSION}
-USER_ID = $(shell id -u)
+UID = $(shell id -u)
 GROUP_ID= $(shell id -g)
-user==www-data
+user==appuser
+
 
 help:
 	@echo 'usage: make [target]'
@@ -13,8 +14,8 @@ help:
 	@echo 'targets'
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ":#"
 
-build: ## build
+build: ## Docker irudia sortu
 	docker build -t ${DOCKER_REPO_APP} .
 
-push:
+push: ## docker irudia bidali registrira
 	docker push ${DOCKER_REPO_APP}
