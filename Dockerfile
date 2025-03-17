@@ -8,6 +8,7 @@ ARG TZ="Europe/Madrid"
 
 # Uid berdineko erabiltzailea sortu eta hainbat alias
 RUN adduser -u ${UID} --disabled-password --gecos "" ${USER} \
+    && usermod -aG www-data ${USER} \
     && mkdir -p /home/${USER}/.ssh \
     && chown -R ${USER}:${USER} /home/${USER} \
     && echo "StrictHostKeyChecking no" >> /home/${USER}/.ssh/config \
@@ -47,7 +48,10 @@ RUN apt-get update && apt-get install -y \
 
 # Karpeta estruktura sortu eta baimenak balioztatu
 RUN mkdir -p /var/www/html /var/cache/fontconfig /var/www/html/var/cache/dev/snappy /var/www/html/public/uploads \
-    && chown -R www-data:www-data /var/cache/fontconfig /var/www/html/var/cache/dev/snappy /var/www/html/public/uploads
+    && chown -R www-data:www-data /var/cache/fontconfig /var/www/html/var/cache/dev/snappy \
+    && chown -R www-data:www-data /var/www/html/public/uploads \
+    && chmod -R 775 /var/www/html/public/uploads \
+    && chmod g+s /var/www/html/public/uploads
 
 # Composer instalatu
 RUN curl -sS https://getcomposer.org/installer | php -- --version=${COMPOSER_VERSION} \

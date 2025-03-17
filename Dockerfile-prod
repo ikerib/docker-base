@@ -1,7 +1,7 @@
 ARG PHP_VERSION=8.3-apache
 FROM php:${PHP_VERSION}
 
-ARG COMPOSER_VERSION=2.8.2
+ARG COMPOSER_VERSION=2.8.5
 ARG TZ="Europe/Madrid"
 
 # Zona ordutegia konfirguratu
