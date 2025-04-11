@@ -34,6 +34,7 @@ RUN apt update \
     && docker-php-ext-install ldap \
     && pecl install xdebug apcu \
     && docker-php-ext-enable opcache xdebug apcu \
+    && apt-get install -y default-jre pdftk-java \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 # Redis instalatu
