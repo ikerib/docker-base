@@ -16,7 +16,7 @@ RUN apt update \
        libldap2-dev libxrender1 libxext6 libfontconfig1 libssl-dev \
        libxslt-dev supervisor \
     && docker-php-ext-install intl pdo gd zip pdo_mysql xml xsl \
-    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-configure ldap --with-libdir=lib/$(uname -m)-linux-gnu/ \
     && docker-php-ext-install ldap \
     && pecl install xdebug apcu \
     && docker-php-ext-enable opcache apcu \
